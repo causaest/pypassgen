@@ -6,7 +6,9 @@ SPECIAL_CHARS = [ "{", "}", "(", ")", "[", "]", "#", ";", ":", "^", ",", ".",
                  "-", "=", "\\", "'", "\"" ]
 EXCLUDED_CHARS = ["O", "0", "1", "l", "`", "'"]
 # EXCLUDED_CHARS = EXCLUDED_CHARS + list(string.ascii_lowercase) + list(string.ascii_uppercase)
-UPPERCASE_PROMPT = "Would you like to consider uppercase letters along with lowercase? (yes/no) "
+
+# Messages
+UPPERCASE_PROMPT_MSG = "Consider uppercase letters along with lowercase? (yes/no) "
 
 def main():
     """
@@ -19,33 +21,33 @@ def main():
         input_uppercase = True
     elif input_uppercase == "no":
         input_uppercase = False
-    pass_final = string_gen(length = input_length, 
-                            special = input_special, 
-                            exclude = EXCLUDED_CHARS, 
-                            uppercase = bool(input_uppercase))
+    pass_final = string_gen(length=input_length, 
+                            special=input_special, 
+                            exclude=EXCLUDED_CHARS, 
+                            uppercase=bool(input_uppercase))
     # If a password has been generated, print it along with its strength
     if pass_final is None:
         print("No password has been generated.")
     else:
-        print("------------------------------------")
+        print()
         print("Your randomly generated password is:", pass_final)
         print("------------------------------------")
         print("Characters excluded to avoid confusion:", EXCLUDED_CHARS)
-        strength_assess(pass_final)
+        # strength_assess(pass_final)
 
-def get_input_uppercase(uppercase_prompt=UPPERCASE_PROMPT):
+def get_input_uppercase(uppercase_prompt=UPPERCASE_PROMPT_MSG):
     """
-    Gets a valid prompt for including uppercase letters.
+    Gets a valid input for including uppercase letters.
  
     Args:
-        uppercase_prompt (str): The string to print as prompt.
+        uppercase_prompt (str): The message to print as prompt.
 
     Returns:
         str: A string, either "yes" or "no".
     """
     while True:
         input_uppercase = input(uppercase_prompt).strip().lower()
-        if input_uppercase in ("yes", "no"):
+        if input_uppercase in ("yes", "no", "y", "n"):
             return input_uppercase
         else:
             print("  Invalid input! Please enter a valid option (yes/no).")
@@ -69,7 +71,7 @@ def strength_assess(password):
     else:
         print("Password strength: strong")
 
-def string_gen(length, special, exclude, uppercase = True):
+def string_gen(length, special, exclude, uppercase=True):
     """
     Creates a string consisting of random characters drawn from a list.
  
